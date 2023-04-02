@@ -9,6 +9,9 @@ Install composer: https://getcomposer.org/download/
 After which you want to update the repository files by doing: `composer update`
 If that is done you can install the remaining needed files by doing: `composer install`
 
+If you get any unzip or fileinfo errors: <br >
+Uncomment `;extension=fileinfo` and `;extension=zip` in your php.ini file. (You can use `php --ini` to see which ini file ur using)
+
 ## Changing environment variables
 In .env (you may want to copy .env.exmaple into .env) you should add or change the value of `FRONTEND_URL` to `http://localhost:4200` so it connects to the angular application.
 Ex: `FRONTEND_URL=http://localhost:4200`
@@ -35,11 +38,6 @@ Otherwise if you want to install it locally, you can do: <br >
 Installing laravel breeze: <br >
 `composer require laravel/breeze --dev` <br >
 You will want to do `php artisan breeze:install` to complete the breeze installation
-
-If you get any unzip or fileinfo errors: <br >
-Uncomment `;extension=fileinfo` and `;extension=zip` in your php.ini file. (You can use `php --ini` to see which ini file ur using)
-
-
 
 ## Learning Laravel
 
