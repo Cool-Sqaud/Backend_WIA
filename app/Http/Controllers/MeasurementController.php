@@ -7,13 +7,6 @@ use Illuminate\Http\Request;
 
 class MeasurementController extends Controller
 {
-    public function debug_to_console($data) {
-        $output = $data;
-        if (is_array($output))
-            $output = implode(',', $output);
-        echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
-    }
-
     public function index() {
         $data =  Measurement::all();
 
@@ -40,7 +33,7 @@ class MeasurementController extends Controller
             'prcp' => $request->input('PRCP'),
             'sndp' => $request->input('SNDP'),
             'frshtt' => $request->input('FRSHTT'),
-            'cldc' => strval($request->input('CLDC')),
+            'cldc' => $request->input('CLDC'),
             'wnddir' => $request->input('WNDDIR')
         );
         return Measurement::create($data);
@@ -50,7 +43,7 @@ class MeasurementController extends Controller
         $result = array();
         $weatherdataArray = $request->input('WEATHERDATA');
         foreach ($weatherdataArray as $weatherdata) {
-            $output = $weatherdata;
+            // $output = $weatherdata;
             $data = array(
                 'station' => $weatherdata['STN'],
                 'date' => $weatherdata['DATE'],
@@ -64,7 +57,7 @@ class MeasurementController extends Controller
                 'prcp' => $weatherdata['PRCP'],
                 'sndp' => $weatherdata['SNDP'],
                 'frshtt' => $weatherdata['FRSHTT'],
-                'cldc' => strval($weatherdata['CLDC']),
+                'cldc' => $weatherdata['CLDC'],
                 'wnddir' => $weatherdata['WNDDIR']
             );
             // $output = $data;
