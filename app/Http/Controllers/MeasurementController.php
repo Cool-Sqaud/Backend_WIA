@@ -71,8 +71,9 @@ class MeasurementController extends Controller
             if (is_array($output))
                 $output = implode(',', $output);
             echo "<script>console.log('Debug Objects: ", $output, "');</script>";
-            array_push($result, Measurement::create($data));
+            // array_push($result, Measurement::create($data));
         }
-        return $result;
+        // return $result;
+        return;
     }
 }
