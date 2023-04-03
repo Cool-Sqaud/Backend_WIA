@@ -17,7 +17,3 @@ Route::get('/', function () {
     // return view('welcome');
     return;
 });
-
-use App\Http\Controllers\MeasurementController;
-
-Route::post('/postWeatherData', [MeasurementController::class, 'storeMultiple']);

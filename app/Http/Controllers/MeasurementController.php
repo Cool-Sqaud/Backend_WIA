@@ -67,11 +67,11 @@ class MeasurementController extends Controller
                 'cldc' => strval($weatherdata['CLDC']),
                 'wnddir' => $weatherdata['WNDDIR']
             );
-            $output = $data;
-            if (is_array($output))
-                $output = implode(',', $output);
-            echo "<script>console.log('Debug Objects: ", $output, "');</script>";
-            // array_push($result, Measurement::create($data));
+            // $output = $data;
+            // if (is_array($output))
+            //     $output = implode(',', $output);
+            // echo "<script>console.log('Debug Objects: ", $output, "');</script>";
+            echo Measurement::create($data), "\n";
         }
         // return $result;
         return;
