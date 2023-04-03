@@ -11,12 +11,18 @@ If that is done you can install the remaining needed files by doing: `composer i
 
 If you get any unzip or fileinfo errors, uncomment `;extension=fileinfo` and `;extension=zip` in your php.ini file. (You can use `php --ini` to see which ini file you are using)
 
-## Changing environment variables
-In .env (you may want to copy .env.exmaple into .env) you should add or change the value of `FRONTEND_URL` to `http://localhost:4200` so it connects to the angular application.
-Ex: `FRONTEND_URL=http://localhost:4200`
-It should be located underneath `APP_URL`
+After you have installed the required dependencies copy the `.env.examle` file and rename it to `.env`
+You should now only have to do `php artisan key:generate` and you can now serve the application with limited features.
 
-You should also change the database env variables to connect to your database.
+## Changing environment variables
+Before the application can work fully you need to connect your database to the server. 
+In the `.env` file you should be able to change multiple options about which database to use, where and what user, make sure these are correct.
+
+When you have connected the database to the server, you will still need to import both the weatherstations and employee tables (employee table is not yet implemented in the application)
+Just run the according sql file on the database and it should add all the necessary tables/rows.
+
+To import/migrate the (not yet) necessary databases that laravel uses you can run `php artisan migrate` 
+When all that is done, you should be completely ready to serve the application
 
 ## Serving the application
 To serve the app use: `php artisan serve` in the project directory.
