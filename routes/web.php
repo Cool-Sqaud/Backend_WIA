@@ -14,5 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return;
 });
+
+use App\Http\Controllers\MeasurementController;
+
+Route::post('/postWeatherData', [MeasurementController::class, 'storeMultiple']);
