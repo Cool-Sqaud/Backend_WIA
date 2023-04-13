@@ -20,6 +20,10 @@ return new class extends Migration
             $table->timestamp('last_used_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
+
+            $table->charset = 'utf16';
+            $table->collation = 'utf16_general_ci';
+            $table->engine = 'InnoDB';
         });
     }
 

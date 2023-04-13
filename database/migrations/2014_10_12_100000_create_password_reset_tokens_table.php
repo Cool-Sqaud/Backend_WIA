@@ -15,6 +15,10 @@ return new class extends Migration
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
+
+            $table->charset = 'utf16';
+            $table->collation = 'utf16_general_ci';
+            $table->engine = 'InnoDB';
         });
     }
 

@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('role_id')->unsigned()->nullable();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            
+            $table->foreign('role_id')->references('id')->on('role');
+
+            $table->charset = 'utf16';
+            $table->collation = 'utf16_general_ci';
+            $table->engine = 'InnoDB';
         });
     }
 

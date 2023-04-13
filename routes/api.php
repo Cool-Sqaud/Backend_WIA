@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MeasurementController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +22,7 @@ use App\Http\Controllers\MeasurementController;
 //     return $request->user();
 // });
 
+Route::get('/users', [UserController::class, 'index']);
 Route::get('/measurements', [MeasurementController::class, 'index']);
 Route::post('/measurement/add', [MeasurementController::class, 'store']);
 Route::post('/measurement/add/multiple', [MeasurementController::class, 'storeMultiple']);
