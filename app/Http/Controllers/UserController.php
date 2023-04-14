@@ -11,4 +11,9 @@ class UserController extends Controller
     {
         return User::all();
     }
+
+    public function user(Request $request)
+    {
+        return $request->user();
+    }
 }

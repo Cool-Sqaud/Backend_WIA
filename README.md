@@ -51,3 +51,35 @@ Laravel has the most extensive and thorough [documentation](https://laravel.com/
 You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
 If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+
+## Extra
+
+composer update
+
+php artisan migrate
+
+php artisan passport:install
+
+copy tokens to .env file (add these if u dont have them yet, example in .env.example)
+
+PASSPORT_CLIENT_1=<1st key>
+PASSPORT_CLIENT_2=<2nd key>
+
+ex:
+PASSPORT_CLIENT_1=eCJm1uOyBjPzUJIHaCQD2GiO8mBKL6wkJLIWnksu
+PASSPORT_CLIENT_2=41iKUOSJUrVAh0z4EzgfJS8aTlClN7PmKAsiGeoZ
+
+In the frontent copy the .example environements to environments example:
+environment.ts.example to environement.ts
+
+copy the 2nd key to environment of frontend (src>environments>environment.development.ts and environment.ts)
+
+seed users table (gives "fake" users):
+php artisan db:seed --class=UsersTableSeeder
+
+check database and take an email of a random user
+
+login with the email and the password "password"
+password is always "password" for seeds
+
+in console you will get an bearer token

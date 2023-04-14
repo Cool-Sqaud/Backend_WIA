@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Measurement;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class MeasurementController extends Controller
 {
     public function index() {
-        $data =  Measurement::all();
-
-        $json_pretty = json_encode($data, JSON_PRETTY_PRINT);
-        echo "<pre>" . $json_pretty . "<pre/>";
-        return;
+        return Measurement::all();
     }
 
     public function store(Request $request) {

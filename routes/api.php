@@ -23,6 +23,8 @@ use App\Http\Controllers\UserController;
 // });
 
 Route::get('/users', [UserController::class, 'index']);
+Route::get('/user', [UserController::class, 'user'])->middleware('auth:api');
+Route::get('/test', [MeasurementController::class, 'test']);
 Route::get('/measurements', [MeasurementController::class, 'index']);
 Route::post('/measurement/add', [MeasurementController::class, 'store']);
 Route::post('/measurement/add/multiple', [MeasurementController::class, 'storeMultiple']);
