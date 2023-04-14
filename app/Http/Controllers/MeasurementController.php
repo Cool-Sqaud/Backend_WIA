@@ -12,6 +12,12 @@ class MeasurementController extends Controller
         return Measurement::all();
     }
 
+    public function test()
+    {
+        $nr = 234;
+        return DB::table('measurement')->where('id', '=', $nr)->get();
+    }
+
     public function store(Request $request) {
         // $output = $request->all();
         // if (is_array($output))
