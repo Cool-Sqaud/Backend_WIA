@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id')->unsigned()->primary();
             $table->string('role', 45);
 
             $table->charset = 'utf16';
@@ -22,6 +22,7 @@ return new class extends Migration
         });
 
         DB::table('role')->insert([
+            ['id' => 0, 'role' => 'Unassigned'],
             ['id' => 1, 'role' => 'Administratieve medewerkers'],
             ['id' => 2, 'role' => 'Wetenschappelijke medewerkers'],
             ['id' => 3, 'role' => 'Administrator'],
