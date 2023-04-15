@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -19,6 +20,12 @@ return new class extends Migration
             $table->collation = 'utf16_general_ci';
             $table->engine = 'InnoDB';
         });
+
+        DB::table('role')->insert([
+            ['id' => 1, 'role' => 'Administratieve medewerkers'],
+            ['id' => 2, 'role' => 'Wetenschappelijke medewerkers'],
+            ['id' => 3, 'role' => 'Administrator'],
+        ]);
     }
 
     /**
@@ -29,7 +36,7 @@ return new class extends Migration
         if (Schema::hasTable('users')) {
             try {
                 Schema::drop('users');
-            } catch(Exception $e) {
+            } catch(QueryException $e) {
                 Schema::table('users', function (Blueprint $table) {
                     $table->dropForeign(['role_id']);
                 });

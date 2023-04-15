@@ -22,8 +22,21 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // });
 
+// User Routes
 Route::get('/users', [UserController::class, 'index']);
-Route::get('/user', [UserController::class, 'user'])->middleware('auth:api');
+Route::get('/user', [UserController::class, 'currentUser'])->middleware('auth:api');
+Route::get('/user/{id}', [UserController::class, 'show']);
+Route::put('/user/{id}/reset', [UserController::class, 'resetPassword']);
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:api');
+
+// User Routes that need admin priviledge
+Route::post('/admin/user', [UserController::class, 'store']);
+Route::put('/admin/user/{id}', [UserController::class, 'update']);
+Route::delete('/admin/user/{id}', [UserController::class, 'destroy']);
+Route::put('/admin/user/{id}/reset', [UserController::class, 'adminPasswordReset']);
+
+
+// Measurement Routes
 Route::get('/test', [MeasurementController::class, 'test']);
 Route::get('/measurements', [MeasurementController::class, 'index']);
 Route::post('/measurement/add', [MeasurementController::class, 'store']);
