@@ -25,10 +25,10 @@ If this command fails be sure to have `;extension=pdo_mysql` uncommented in your
 When all that is done, you should be completely ready to serve the application
 
 ## Installing passport
-Make sure the previous 2 steps are complete (and u have updated the dependecies to the last version with `composer update`)
+Make sure the previous 2 steps are complete (and u have updated the dependecies to the lastest version with `composer update`)
 
-If you havn't yet, migrate the necessary tables to the database with `php artisan migrate`
-If that's done you can install passport: `php artisan passport:install`
+If you havn't yet, migrate the necessary tables to the database with `php artisan migrate`< /br>
+If that's done you can install passport: `php artisan passport:install`< /br>
 The terminal or commandprompt, whatever you are using, should print out the following:
 ```
 Encryption keys generated successfully.
@@ -39,10 +39,10 @@ Password grant client created successfully.
 Client ID: 2
 Client secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-Copy both client secrets to the right environmental variable in your .env, if you have an older .env file you can look at the example in .env.example
+Copy both client secrets to the right environmental variable in your .env, if you have an older .env file you can look at the example in .env.example< /br>
 You will also want to copy the client 2 key to your frontend environment variables. This is so you can send request where authentication is required.
 
-You can now create a random set of 10 users, of which the password is `password` with the command: `php artisan db:seed --class=UsersTableSeeder`
+You can now create a random set of 10 users, of which the password is `password` with the command: < /br>`php artisan db:seed --class=UsersTableSeeder`< /br>
 In the database you should now have 10 users, of which you can choose one to login and test the appropriate features on your frontend
 
 ## Serving the application
