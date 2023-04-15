@@ -40,7 +40,8 @@ Client ID: 2
 Client secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 Copy both client secrets to the right environmental variable in your `.env`, if you have an older `.env` file you can look at the example in `.env.example` </br>
-You will also want to copy the client 2 key to your frontend environment variables. This is so you can send request where authentication is required.
+You will also want to copy the client 2 key to your frontend environment variables. This is so you can send request where authentication is required. </br>
+In the environment file (of the frontend) you will also see `CLIENT_NR`, make sure this is the same client ID as the client Secret you are using, else the application will say you are unautherized.
 
 You can now create a random set of 10 users, of which the password is `password` with the command: </br> `php artisan db:seed --class=UsersTableSeeder` </br>
 In the database you should now have 10 users, of which you can choose one to login and test the appropriate features on your frontend
