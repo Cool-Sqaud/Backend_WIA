@@ -39,5 +39,6 @@ Route::put('/admin/user/{id}/reset', [UserController::class, 'adminPasswordReset
 // Measurement Routes
 Route::get('/test', [MeasurementController::class, 'test']);
 Route::get('/measurements', [MeasurementController::class, 'index']);
+Route::get('/measurement/{stationnumber}', [MeasurementController::class, 'show']);
 Route::post('/measurement/add', [MeasurementController::class, 'store']);
 Route::post('/measurement/add/multiple', [MeasurementController::class, 'storeMultiple']);

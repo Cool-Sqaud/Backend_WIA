@@ -12,6 +12,11 @@ class MeasurementController extends Controller
         return Measurement::all();
     }
 
+    public function show(Int $stationnumber)
+    {
+        return DB::select('SELECT * FROM measurement WHERE measurement.station = $stationnumber ORDER BY date DESC');
+    }
+
     public function test()
     {
         $nr = 234;
