@@ -12,15 +12,24 @@ class MeasurementController extends Controller
         return Measurement::all();
     }
 
-    public function show(Int $stationnumber)
+    public function show(int $id)
     {
-        return DB::select('SELECT * FROM measurement WHERE measurement.station = $stationnumber ORDER BY date DESC');
+        return DB::table('measurement')->where('id', '=', $id)->get();
     }
 
-    public function test()
+    public function getStation(string $stationnumber)
     {
-        $nr = 234;
-        return DB::table('measurement')->where('id', '=', $nr)->get();
+        return DB::table('station')->where('name', '=', $stationnumber)->get();
+    }
+
+    public function getStationMeasurements(string $stationnumber)
+    {
+        return DB::table('measurement')->where('STN', '=', $stationnumber)->get();
+    }
+
+    public function recentIndex()
+    {
+        return DB::table('measurement')->limit(100)->get();
     }
 
     public function store(Request $request) {
