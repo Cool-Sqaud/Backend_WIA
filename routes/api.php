@@ -45,5 +45,6 @@ Route::get('/measurement/{stationnumber}', [MeasurementController::class, 'show'
 Route::post('/measurement/add', [MeasurementController::class, 'store']);
 Route::post('/measurement/add/multiple', [MeasurementController::class, 'storeMultiple']);
 
+Route::get('/station/{stationnumber}', [MeasurementController::class, 'getStationMeasurements']);
 Route::get('/stations', [StationController::class, 'getAllStationsAndLocations']);
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\Measurement;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use MathPHP\NumericalAnalysis\Interpolation\NevillesMethod;
 
 class MeasurementController extends Controller
 {
@@ -25,7 +27,7 @@ class MeasurementController extends Controller
     public function getStationMeasurements(string $stationnumber)
     {
         return DB::table('measurement')
-                ->where('STN', '=', $stationnumber)
+                ->where('station', '=', $stationnumber)
                 ->get();
     }
 
@@ -39,73 +41,114 @@ class MeasurementController extends Controller
     }
 
     public function store(Request $request) {
-        $data = $this->checkData($request->input());
+        $data = $this->validateData($request->input());
 
-        return Measurement::create($data);
+        // return Measurement::create($data);
     }
 
     public function storeMultiple(Request $request) {
         $result = '';
         foreach ($request->input('WEATHERDATA') as $weatherdata) {
-            $data = $this->checkData($weatherdata);
-            $result += Measurement::create($data) . "\n";
+            $data = $this->validateData($weatherdata);
+            // $result += Measurement::create($data) . "\n";
         }
         return response()->json(['message'=>'added values:\n ' . $result], 200);
     }
 
-    private function checkData(array $weatherdata): array
+    private function validateData(array $weatherdata): array
     {
+        $timestamp = DateTime::createFromFormat('Y-m-d H:i:s', $weatherdata['DATE'] . ' ' . $weatherdata['TIME'])->getTimestamp();
+
         $data = array(
             'station' => $weatherdata['STN'],
             'date' => $weatherdata['DATE'],
             'time' => $weatherdata['TIME'],
-            'temp' => $weatherdata['TEMP'] !== "None" ? 
-                $weatherdata['TEMP'] : $this->extrapolateData($weatherdata['STN'], 'temp'),
-            'dewp' => $weatherdata['DEWP'] !== "None" ? 
-                $weatherdata['DEWP'] : $this->extrapolateData($weatherdata['STN'], 'dewp'),
-            'stp' => $weatherdata['STP'] !== "None" ? 
-                $weatherdata['STP'] : $this->extrapolateData($weatherdata['STN'], 'stp'),
-            'slp' => $weatherdata['SLP'] !== "None" ? 
-                $weatherdata['SLP'] : $this->extrapolateData($weatherdata['STN'], 'slp'),
-            'visib' => $weatherdata['VISIB'] !== "None" ? 
-                $weatherdata['VISIB'] : $this->extrapolateData($weatherdata['STN'], 'visib'),
-            'wdsp' => $weatherdata['WDSP'] !== "None" ? 
-                $weatherdata['WDSP'] : $this->extrapolateData($weatherdata['STN'], 'wdsp'),
-            'prcp' => $weatherdata['PRCP'] !== "None" ? 
-                $weatherdata['PRCP'] : $this->extrapolateData($weatherdata['STN'], 'prcp'),
-            'sndp' => $weatherdata['SNDP'] !== "None" ? 
-                $weatherdata['SNDP'] : $this->extrapolateData($weatherdata['STN'], 'sndp'),
-            'frshtt' => $weatherdata['FRSHTT'] !== "None" ? 
-                $weatherdata['FRSHTT'] : $this->extrapolateData($weatherdata['STN'], 'frshtt'),
-            'cldc' => $weatherdata['CLDC'] !== "None" ? 
-                $weatherdata['CLDC'] : $this->extrapolateData($weatherdata['STN'], 'cldc'),
-            'winddir' => $weatherdata['WNDDIR'] !== "None" ? 
-                $weatherdata['WNDDIR'] : $this->extrapolateData($weatherdata['STN'], 'winddir'),
+            'temp' => $this->validateKey($weatherdata['STN'], 'temp', $weatherdata['TEMP'], $timestamp),
+            'dewp' => $this->validateKey($weatherdata['STN'], 'dewp', $weatherdata['DEWP'], $timestamp),
+            'stp' => $this->validateKey($weatherdata['STN'], 'stp', $weatherdata['STP'], $timestamp),
+            'slp' => $this->validateKey($weatherdata['STN'], 'slp', $weatherdata['SLP'], $timestamp),
+            'visib' => $this->validateKey($weatherdata['STN'], 'visib', $weatherdata['VISIB'], $timestamp),
+            'wdsp' => $this->validateKey($weatherdata['STN'], 'wdsp', $weatherdata['WDSP'], $timestamp),
+            'prcp' => $this->validateKey($weatherdata['STN'], 'prcp', $weatherdata['PRCP'], $timestamp),
+            'sndp' => $this->validateKey($weatherdata['STN'], 'sndp', $weatherdata['SNDP'], $timestamp),
+            'frshtt' => $this->validateKey($weatherdata['STN'], 'frshtt', $weatherdata['FRSHTT'], $timestamp),
+            'cldc' => $this->validateKey($weatherdata['STN'], 'cldc', $weatherdata['CLDC'], $timestamp),
+            'winddir' => $this->validateKey($weatherdata['STN'], 'winddir', $weatherdata['WNDDIR'], $timestamp),
         );
         return $data;
     }
 
-    private function extrapolateData(string $stationnumber, string $key)
+    // Need to calculate best thresholds
+    private array $keyThreshold = array(
+        'temp' => 1.00,
+        'dewp' => 1.00,
+        'stp' => 1.00,
+        'slp' => 1.00,
+        'visib' => 1.00,
+        'wdsp' => 1.00,
+        'prcp' => 1.00,
+        'sndp' => 1.00,
+        'frshtt' => 1.00, // Doesnt get checked
+        'cldc' => 1.00,
+        'winddir' => 1.00,
+    );
+
+    private int $requiredEntries = 10;
+
+    private function validateKey(string $stationnumber, string $key, string $value, int $timestamp): float | int | string | null
     {
-        // Take last known entry of key and sets it to that value
+        if ($key == 'frshtt') {
+            if ($value == "None") return $this->getLastValue($stationnumber, $key);
+            return $value;
+        }
+        
+        $extrapolatedData = $this->getExtrapolation($stationnumber, $key, $timestamp);
+        if ($extrapolatedData === null) return ($value == "None") ? null : $value; // Gets called if required entries is less then 
+        $extrapolatedValue = ($key == 'winddir' ? (int)$extrapolatedData : (float)$extrapolatedData);
+        
+        if ($value == "None") return $extrapolatedValue;
+
+        $threshold = abs($extrapolatedValue) * $this->keyThreshold[$key];
+        return abs($value - $extrapolatedValue) <= $threshold ? $value : $extrapolatedValue;
+    }
+
+    private function getLastValue(string $stationnumber, string $key): string /*| float | int*/
+    {
+        //Only used for frshtt
         $lastValue = DB::table('measurement')
-                ->where('station', "=", "" . $stationnumber)
+                ->where('station', "=", $stationnumber)
                 ->orderBy('date', 'desc')
                 ->orderBy('time', 'desc')
                 ->limit(1)
                 ->select($key)
                 ->get();
+        echo $lastValue->$key . ' <br> <br> ';
+        return $lastValue ? $lastValue->$key : null;
+    }
 
-        // Returns $lastValue, or if $lastValue could not be found null
-        return $lastValue ? $lastValue : null;
+    private function getExtrapolation(string $stationnumber, string $key, int $timestamp): float | int | null
+    {    
+        $lastMeasurements = DB::table('measurement')
+                ->where('station', "=", $stationnumber)
+                ->whereNotNull($key)
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
+                ->limit(30)
+                ->select('date', 'time', $key)
+                ->get()
+                ->toArray();
 
-        // ToDo: Add data extrapolation with frenchCurveExtrapolation?
-        // $lastMeasurements = DB::table('measurement')
-        //         ->where('station', "=", "" . $stationnumber)
-        //         ->orderBy('date', 'desc')
-        //         ->orderBy('time', 'desc')
-        //         ->limit(30)
-        //         ->select($key)
-        //         ->get();
+        if (count($lastMeasurements) < $this->requiredEntries) return null;
+        
+        $data = [];
+        foreach ($lastMeasurements as $measurement) {
+            $datetime = DateTime::createFromFormat('Y-m-d H:i:s', $measurement->date . ' ' . $measurement->time);
+            $data[] = [$datetime->getTimestamp(), $measurement->$key];
+        }
+        ksort($data);
+
+        $timestamp = is_string($timestamp) ? strtotime($timestamp) : $timestamp;
+
+        return NevillesMethod::interpolate($timestamp, $data);
     }
 }
