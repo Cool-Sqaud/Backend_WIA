@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +39,11 @@ Route::put('/admin/user/{id}/reset', [UserController::class, 'adminPasswordReset
 
 // Measurement Routes
 Route::get('/test', [MeasurementController::class, 'test']);
-Route::get('/measurements', [MeasurementController::class, 'index']);
+Route::get('/measurements', [MeasurementController::class, 'recentIndex']);
+Route::get('/measurements/all', [MeasurementController::class, 'index']);
 Route::get('/measurement/{stationnumber}', [MeasurementController::class, 'show']);
 Route::post('/measurement/add', [MeasurementController::class, 'store']);
 Route::post('/measurement/add/multiple', [MeasurementController::class, 'storeMultiple']);
+
+Route::get('/stations', [StationController::class, 'getAllStationsAndLocations']);
+

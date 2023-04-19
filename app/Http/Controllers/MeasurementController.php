@@ -9,27 +9,33 @@ use Illuminate\Http\Request;
 class MeasurementController extends Controller
 {
     public function index() {
-        return Measurement::all();
+        return DB::table('measurement')
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
+                ->get();
     }
 
     public function show(int $id)
     {
-        return DB::table('measurement')->where('id', '=', $id)->get();
-    }
-
-    public function getStation(string $stationnumber)
-    {
-        return DB::table('station')->where('name', '=', $stationnumber)->get();
+        return DB::table('measurement')
+                ->where('id', '=', $id)
+                ->get();
     }
 
     public function getStationMeasurements(string $stationnumber)
     {
-        return DB::table('measurement')->where('STN', '=', $stationnumber)->get();
+        return DB::table('measurement')
+                ->where('STN', '=', $stationnumber)
+                ->get();
     }
 
     public function recentIndex()
     {
-        return DB::table('measurement')->limit(100)->get();
+        return DB::table('measurement')
+                ->orderBy('date', 'desc')
+                ->orderBy('time', 'desc')
+                ->limit(100)
+                ->get();
     }
 
     public function store(Request $request) {
@@ -51,8 +57,11 @@ class MeasurementController extends Controller
             'sndp' => $request->input('SNDP'),
             'frshtt' => $request->input('FRSHTT'),
             'cldc' => $request->input('CLDC'),
-            'wnddir' => $request->input('WNDDIR')
+            'winddir' => $request->input('WNDDIR')
         );
+
+
+
         return Measurement::create($data);
     }
 
