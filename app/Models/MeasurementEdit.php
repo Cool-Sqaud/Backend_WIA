@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MeasurementEdit extends Model
 {
+    //Table needs to be changed so it takes in stationnumber, key, newvalue and oldvalue (+ timestamps from laravel)
+
     use HasFactory;
 
     protected $table = 'measurement_edit';
