@@ -43,14 +43,14 @@ class MeasurementController extends Controller
     public function store(Request $request) {
         $data = $this->validateData($request->input());
 
-        // return Measurement::create($data);
+        return Measurement::create($data);
     }
 
     public function storeMultiple(Request $request) {
         $result = '';
         foreach ($request->input('WEATHERDATA') as $weatherdata) {
             $data = $this->validateData($weatherdata);
-            // $result += Measurement::create($data) . "\n";
+            $result += Measurement::create($data) . "\n";
         }
         return response()->json(['message'=>'added values:\n ' . $result], 200);
     }
