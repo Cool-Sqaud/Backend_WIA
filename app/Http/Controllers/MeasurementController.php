@@ -97,19 +97,21 @@ class MeasurementController extends Controller
 
     private function validateKey(string $stationnumber, string $key, string $value, int $timestamp): float | int | string | null
     {
-        if ($key == 'frshtt') {
-            if ($value == "None") return $this->getLastValue($stationnumber, $key);
-            return $value;
-        }
-        
-        $extrapolatedData = $this->getExtrapolation($stationnumber, $key, $timestamp);
-        if ($extrapolatedData === null) return ($value == "None") ? null : $value; // Gets called if required entries is less then 
-        $extrapolatedValue = ($key == 'winddir' ? (int)$extrapolatedData : (float)$extrapolatedData);
-        
-        if ($value == "None") return $extrapolatedValue;
+        return $value == "None" ? null : $value;
 
-        $threshold = abs($extrapolatedValue) * $this->keyThreshold[$key];
-        return abs($value - $extrapolatedValue) <= $threshold ? $value : $extrapolatedValue;
+        // if ($key == 'frshtt') {
+        //     if ($value == "None") return $this->getLastValue($stationnumber, $key);
+        //     return $value;
+        // }
+        
+        // $extrapolatedData = $this->getExtrapolation($stationnumber, $key, $timestamp);
+        // if ($extrapolatedData === null) return ($value == "None") ? null : $value; // Gets called if required entries is less then 
+        // $extrapolatedValue = ($key == 'winddir' ? (int)$extrapolatedData : (float)$extrapolatedData);
+        
+        // if ($value == "None") return $extrapolatedValue;
+
+        // $threshold = abs($extrapolatedValue) * $this->keyThreshold[$key];
+        // return abs($value - $extrapolatedValue) <= $threshold ? $value : $extrapolatedValue;
     }
 
     private function getLastValue(string $stationnumber, string $key): string /*| float | int*/
