@@ -13,18 +13,24 @@ class BodegasSeeder extends Seeder
      */
     public function run(): void
     {
-        User::truncate();;
+        User::truncate();
         User::factory()->create([
-                'role_id' => 1,
+                'role_id' => 2,
                 'first_name' => 'Super',
                 'last_name' => 'Admin',
                 'email' => 'admin@catenazapata.com',
             ]);
         User::factory()->create([
-                'role_id' => 0,
+                'role_id' => 1,
                 'first_name' => 'Gaston',
                 'last_name' => 'Perez Izquierdo',
                 'email' => 'g.izquierdo@catenazapata.com',
+            ]);
+        User::factory()->create([
+                'role_id' => 0,
+                'first_name' => 'Jowan',
+                'last_name' => 'Mushyan',
+                'email' => 'j.mushyan@catenazapata.com',
             ]);
     }
 }
