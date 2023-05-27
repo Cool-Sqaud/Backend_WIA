@@ -11,30 +11,27 @@ use MathPHP\NumericalAnalysis\Interpolation\NevillesMethod;
 class MeasurementController extends Controller
 {
     public function index() {
-        return DB::table('measurement')
-                ->orderBy('date', 'desc')
-                ->orderBy('time', 'desc')
-                ->get();
+        return Measurement::all();
     }
 
     public function show(int $id)
     {
-        return DB::table('measurement')
-                ->where('id', '=', $id)
+        return Measurement::
+                  where('id', '=', $id)
                 ->get();
     }
 
     public function getStationMeasurements(string $stationnumber)
     {
-        return DB::table('measurement')
-                ->where('station', '=', $stationnumber)
+        return Measurement::
+                  where('station', '=', $stationnumber)
                 ->get();
     }
 
     public function recentIndex()
     {
-        return DB::table('measurement')
-                ->orderBy('date', 'desc')
+        return Measurement::
+                  orderBy('date', 'desc')
                 ->orderBy('time', 'desc')
                 ->limit(100)
                 ->get();
@@ -117,8 +114,8 @@ class MeasurementController extends Controller
     private function getLastValue(string $stationnumber, string $key): string /*| float | int*/
     {
         //Only used for frshtt
-        $lastValue = DB::table('measurement')
-                ->where('station', "=", $stationnumber)
+        $lastValue = Measurement::
+                  where('station', "=", $stationnumber)
                 ->orderBy('date', 'desc')
                 ->orderBy('time', 'desc')
                 ->limit(1)
@@ -130,8 +127,8 @@ class MeasurementController extends Controller
 
     private function getExtrapolation(string $stationnumber, string $key, int $timestamp): float | int | null
     {    
-        $lastMeasurements = DB::table('measurement')
-                ->where('station', "=", $stationnumber)
+        $lastMeasurements = Measurement::
+                  where('station', "=", $stationnumber)
                 ->whereNotNull($key)
                 ->orderBy('date', 'desc')
                 ->orderBy('time', 'desc')

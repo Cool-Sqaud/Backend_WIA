@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MeasurementController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BodegasController;
 
 
 /*
@@ -36,7 +37,6 @@ Route::put('/admin/user/{id}', [UserController::class, 'update']);
 Route::delete('/admin/user/{id}', [UserController::class, 'destroy']);
 Route::put('/admin/user/{id}/reset', [UserController::class, 'adminPasswordReset']);
 
-
 // Measurement Routes
 Route::get('/test', [MeasurementController::class, 'test']);
 Route::get('/measurements', [MeasurementController::class, 'recentIndex']);
@@ -48,3 +48,14 @@ Route::post('/measurement/add/multiple', [MeasurementController::class, 'storeMu
 Route::get('/station/{stationnumber}', [MeasurementController::class, 'getStationMeasurements']);
 Route::get('/stations', [StationController::class, 'getAllStationsAndLocations']);
 
+// Create a function that takes weatherdata and groups by day, of a specific timeframe (BodegasController)
+// Create an user endpoint that only shows admins created after (UserController)
+// Create an admin user endpoint (UserConroller) (post)
+
+
+// Create an add admin user endpoint (UserController) (post)
+// Create a route where the super admin can change a users role (UserController) (post)
+// Create humidity endpoint (BodegasController)
+// Create humidity history endpoint (BodegasController)
+// Create temperature endpoint (BodegasController)
+// Create temperature history endpoint (BodegasController)

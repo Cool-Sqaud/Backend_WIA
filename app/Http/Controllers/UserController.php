@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,7 @@ class UserController extends Controller
         // if user->role_id etc
         $role_id = $request->role_id ? $request->role_id : 0;
         return User::create([
-            'role_id' => $role_id,
+            'role_id' => 0,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -103,4 +104,29 @@ class UserController extends Controller
     
         return response()->json(['message'=>'user logged out'], 200);
     }
+
+    // Model User{
+    //     id bigint UN AI PK 
+    //     role_id int UN 
+    //     first_name varchar(255) 
+    //     last_name varchar(255) 
+    //     email varchar(255) 
+    //     password varchar(255) 
+    //     remember_token varchar(100) 
+    //     created_at timestamp 
+    //     updated_at timestamp
+    // }
+
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    // Create an add admin user endpoint (UserController)
+
+
+    // Create a route where the super admin can change a users role (UserController)
+
+
+    /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    // Create an user endpoint that only shows admins created after (UserController)
+    
+
+    // Create an admin user endpoint (UserConroller) (post)
 }
