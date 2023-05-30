@@ -128,5 +128,5 @@ class UserController extends Controller
     // Create an user endpoint that only shows admins created after (UserController)
     
 
-    // Create an admin user endpoint (UserConroller) (post)
+    // Create an user endpoint that changes a users role (UserConroller) (post)
 }

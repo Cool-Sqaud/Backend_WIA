@@ -50,8 +50,7 @@ Route::get('/stations', [StationController::class, 'getAllStationsAndLocations']
 
 // Create a function that takes weatherdata and groups by day, of a specific timeframe (BodegasController)
 // Create an user endpoint that only shows admins created after (UserController)
-// Create an admin user endpoint (UserConroller) (post)
-
+// Create an user endpoint that changes a users role (UserConroller) (post)
 
 // Create an add admin user endpoint (UserController) (post)
 // Create a route where the super admin can change a users role (UserController) (post)
