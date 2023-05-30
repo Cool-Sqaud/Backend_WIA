@@ -119,14 +119,38 @@ class UserController extends Controller
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // Create an add admin user endpoint (UserController)
+    // Only super admin
 
 
     // Create a route where the super admin can change a users role (UserController)
+    // Only super admin
+    // public function adminRole(Request $request)
+    // {
+    //     $user = User::findOrFail($request->id);
+    //     $user->role_id = $request->role_id;
+    //     $user->save();
+    //     return $user;
+    // }
 
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // Create an user endpoint that only shows admins created after (UserController)
-    
+    public function adminUsers()
+    {
+        // datetime format is "Y-m-d H:i:s"
+        $date = "2023-5-24";
+        return User::
+                where('role_id', '>=', 1) // 0, 1, 2
+                ->whereDate('created_at', '>', $date)
+                ->get();
+    }
 
     // Create an user endpoint that changes a users role (UserConroller) (post)
+    public function adminRole(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        $user->role_id = $request->role_id;
+        $user->save();
+        return $user;
+    }
 }

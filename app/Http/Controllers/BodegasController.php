@@ -84,4 +84,12 @@ class BodegasController extends Controller
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // Create a function that takes weatherdata and orders by day, of a specific timeframe (BodegasController)
+    public function orderedData()
+    {
+        return Measurement::
+                where('station', 351660)
+                ->select('date')
+                ->groupBy('date')
+                ->get();
+    }
 }

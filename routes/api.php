@@ -49,12 +49,20 @@ Route::get('/station/{stationnumber}', [MeasurementController::class, 'getStatio
 Route::get('/stations', [StationController::class, 'getAllStationsAndLocations']);
 
 // Create a function that takes weatherdata and groups by day, of a specific timeframe (BodegasController)
+Route::get('/measurements/ordered', [BodegasController::class, 'orderedData']);
 // Create an user endpoint that only shows admins created after (UserController)
-// Create an user endpoint that changes a users role (UserConroller) (post)
+Route::get('/users/test', [UserController::class, 'adminUsers']);
+// Create an user endpoint that changes a users role (UserController) (post)
+Route::post('admin/user/role', [UserController::class, 'adminRole']);
 
+// Corne
 // Create an add admin user endpoint (UserController) (post)
 // Create a route where the super admin can change a users role (UserController) (post)
+
+// Stan
 // Create humidity endpoint (BodegasController)
 // Create humidity history endpoint (BodegasController)
+
+// Christiaan
 // Create temperature endpoint (BodegasController)
 // Create temperature history endpoint (BodegasController)
