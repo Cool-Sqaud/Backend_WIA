@@ -65,4 +65,6 @@ Route::post('admin/user/role', [UserController::class, 'adminRole']);
 
 // Christiaan
 // Create temperature endpoint (BodegasController)
+Route::get('/measurements/temperature', [BodegasController::class, 'temperatureData']);
 // Create temperature history endpoint (BodegasController)
+Route::get('/measurements/temperature/history', [BodegasController::class, 'temperatureDataHistory']);

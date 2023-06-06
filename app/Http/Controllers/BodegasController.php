@@ -76,10 +76,32 @@ class BodegasController extends Controller
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     // Create temperature endpoint (BodegasController)
     // All the data from weather stations in South-America where temperature is below 15 degrees Celsius 
-
+    public function temperatureData()
+    {
+        config()->set('database.connections.mysql.strict', false);
+        return Measurement::
+        join('wia.geolocation as g', 'Measurement.station', '=', 'g.station_name')
+        ->whereIn('g.country_code', ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'GY', 'PY', 'PE', 'SR', 'UY', 'VE', 'GS', 'FK', 'GF'])
+        ->where('temp', '<', 15)
+        ->whereBetween(DB::raw("CONCAT(date, ' ', time)"), [now()->subHour(), now()])
+        ->select('station', DB::raw('MAX(date) as date'), DB::raw('MAX(time) as time'), 'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 'g.country_code')
+        ->groupBy('station')
+        ->get();
+    }
 
     // Create temperature history endpoint (BodegasController)
     // All the data from weather stations in South-America where temperature is below 15 degrees Celsius, (one station can only appear once a day).
+    public function temperatureDataHistory()
+    {
+        config()->set('database.connections.mysql.strict', false);
+        return Measurement::
+        join('wia.geolocation as g', 'Measurement.station', '=', 'g.station_name')
+        ->whereIn('g.country_code', ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'GY', 'PY', 'PE', 'SR', 'UY', 'VE', 'GS', 'FK', 'GF'])
+        ->where('temp', '<', 15)
+        ->select('station', 'date', DB::raw('MAX(time) as time'), 'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 'g.country_code')
+        ->groupBy('station', 'date')
+        ->get();
+    }
 
 
     /*-------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
