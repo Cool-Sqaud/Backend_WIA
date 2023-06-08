@@ -166,9 +166,12 @@ class UserController extends Controller
 
     public function SA_role_changer(Request $request)
     {
+        if ($request->role_id > 1 || $request->role_id < 0) {
+            return response()->json(['message'=>'invalid role_id in request'], 404);
+        }
         $user = User::findOrFail($request->id);
 
-        if ($user->role_id = 2){
+        if ($user->role_id != 2) {
             $user->role_id = $request->role_id;
             $user->save();
         }
