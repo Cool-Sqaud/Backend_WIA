@@ -153,4 +153,26 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+    // Get SuperAdmin ID
+    public function getSuperAdmin()
+    {
+        $getSuperAdmin = User:: 
+                where ('role_id', '2')
+                ->get();
+
+    //$getSuperAdmin = DB::select('select * from users where role_id = 2');
+    return $getSuperAdmin;
+    }
+
+    public function SA_role_changer(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+
+        if ($user->role_id = 2){
+            $user->role_id = $request->role_id;
+            $user->save();
+        }
+        return $user;
+    }
 }
+

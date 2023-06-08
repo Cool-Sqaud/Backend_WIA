@@ -57,7 +57,9 @@ Route::post('admin/user/role', [UserController::class, 'adminRole']);
 
 // Corne
 // Create an add admin user endpoint (UserController) (post)
+Route::get('/users/SuperAdmin', [UserController::class, 'getSuperAdmin']);
 // Create a route where the super admin can change a users role (UserController) (post)
+Route::get('/users/SARC', [UserController::class, 'SA_role_changer']);
 
 // Stan
 // Create humidity endpoint (BodegasController)
