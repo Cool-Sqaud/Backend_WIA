@@ -82,9 +82,13 @@ class BodegasController extends Controller
         return Measurement::
         join('wia.geolocation as g', 'Measurement.station', '=', 'g.station_name')
         ->whereIn('g.country_code', ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'GY', 'PY', 'PE', 'SR', 'UY', 'VE', 'GS', 'FK', 'GF'])
+        ->join('wia.country as c', 'g.country_code', '=', 'c.country_code')
+        ->join('wia.station as s', 'Measurement.station', '=', 's.name')
         ->where('temp', '<', 15)
         ->whereBetween(DB::raw("CONCAT(date, ' ', time)"), [now()->subHour(), now()])
-        ->select('station', DB::raw('MAX(date) as date'), DB::raw('MAX(time) as time'), 'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 'g.country_code')
+        ->select('station', DB::raw('MAX(date) as date'), DB::raw('MAX(time) as time'), 
+                 'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 
+                 'c.country', 's.longitude', 's.latitude', 's.elevation')
         ->groupBy('station')
         ->get();
     }
@@ -97,8 +101,12 @@ class BodegasController extends Controller
         return Measurement::
         join('wia.geolocation as g', 'Measurement.station', '=', 'g.station_name')
         ->whereIn('g.country_code', ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'GY', 'PY', 'PE', 'SR', 'UY', 'VE', 'GS', 'FK', 'GF'])
+        ->join('wia.country as c', 'g.country_code', '=', 'c.country_code')
+        ->join('wia.station as s', 'Measurement.station', '=', 's.name')
         ->where('temp', '<', 15)
-        ->select('station', 'date', DB::raw('MAX(time) as time'), 'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 'g.country_code')
+        ->select('station', 'date', DB::raw('MAX(time) as time'), 
+                 'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 
+                 'c.country', 's.longitude', 's.latitude', 's.elevation')
         ->groupBy('station', 'date')
         ->get();
     }
