@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MeasurementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BodegasController;
+use App\Http\Controllers\MindController;
 
 
 /*
@@ -63,7 +64,9 @@ Route::post('/users/SARC', [UserController::class, 'SA_role_changer']);
 
 // Stan
 // Create humidity endpoint (BodegasController)
+Route::get('measurements/humidity', [MindController::class, 'humidityData']);
 // Create humidity history endpoint (BodegasController)
+Route::get('measurements/humidity/history', [MindController::class],'humidityDataHistory');
 
 // Christiaan
 // Create temperature endpoint (BodegasController)
