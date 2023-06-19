@@ -90,7 +90,7 @@ class BodegasController extends Controller
                  'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 
                  'c.country', 's.longitude', 's.latitude', 's.elevation')
         ->groupBy('station')
-        ->orderBy('station', 'asc')
+        ->orderBy('time', 'desc')
         ->get();
     }
 
@@ -110,7 +110,7 @@ class BodegasController extends Controller
                  'c.country', 's.longitude', 's.latitude', 's.elevation')
         ->groupBy('station', 'date')
         ->orderBy('date', 'desc')
-        ->orderBy('station', 'asc')
+        ->orderBy('time', 'desc')
         ->get();
     }
 
