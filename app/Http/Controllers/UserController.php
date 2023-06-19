@@ -28,9 +28,10 @@ class UserController extends Controller
     public function store(Request $request) {
         // Check for priviledge (admin)
         // if user->role_id etc
-        $role_id = $request->role_id ? $request->role_id : 0;
+        if (!$request->role_id || $request->role_id > 1) $role_id = 0;
+        else $role_id = $request->role_id;
         return User::create([
-            'role_id' => 0,
+            'role_id' => $role_id,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,

@@ -66,7 +66,7 @@ Route::post('/users/SARC', [UserController::class, 'SA_role_changer']);
 // Create humidity endpoint (BodegasController)
 Route::get('measurements/humidity', [MindController::class, 'humidityData']);
 // Create humidity history endpoint (BodegasController)
-Route::get('measurements/humidity/history', [MindController::class],'humidityDataHistory');
+Route::get('measurements/humidity/history', [MindController::class, 'humidityDataHistory']);
 
 // Christiaan
 // Create temperature endpoint (BodegasController)
