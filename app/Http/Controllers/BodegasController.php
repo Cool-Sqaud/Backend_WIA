@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -85,7 +86,7 @@ class BodegasController extends Controller
         ->join('country as c', 'g.country_code', '=', 'c.country_code')
         ->join('station as s', 'Measurement.station', '=', 's.name')
         ->where('temp', '<', 15)
-        ->whereBetween(DB::raw("CONCAT(date, ' ', time)"), [now()->subHour(), now()])
+        ->where("date", Carbon::today()->format('Y-m-d'))
         ->select('station', DB::raw('MAX(date) as date'), DB::raw('MAX(time) as time'), 
                  'temp', 'dewp', 'stp', 'slp', 'visib', 'wdsp', 'prcp', 'sndp', 'frshtt', 'cldc', 'winddir', 
                  'c.country', 's.longitude', 's.latitude', 's.elevation')
