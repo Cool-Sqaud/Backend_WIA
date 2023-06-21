@@ -13,8 +13,9 @@ use App\Models\Station;
 class MindController extends Controller
 {
     public function humidityData(){
+        config()->set('database.connections.mysql.strict', false);
         $table = DB::table('measurement as m')
-            ->selectRaw('ROUND(AVG(m.dewp), 1) as dewp, m.station, c.country, m.date , ROUND(AVG(m.temp), 1) as temp , ROUND(AVG(m.wdsp), 1)as wdsp, ROUND(AVG(m.prcp), 1) as prcp, ROUND(AVG(m.cldc), 1) as cldc, s.longitude, s.latitude, s.elevation')
+            ->selectRaw('ROUND(AVG(m.dewp), 1) as dewp, m.station, c.country, m.date , ROUND(AVG(m.temp), 1) as temp , ROUND(AVG(m.wdsp), 1)as wdsp, ROUND(AVG(m.prcp), 1) as prcp, ROUND(AVG(m.cldc), 1) as cldc, m.frshtt as frshtt, s.longitude, s.latitude, s.elevation')
             ->join('geolocation as g', 'm.station', '=','g.station_name')
             ->join('station as s', 'm.station', '=', 's.name')
             ->join('country as c', 'g.country_code', '=', 'c.country_code')
@@ -28,8 +29,9 @@ class MindController extends Controller
     }
 
     public function humidityDataHistory(){
+        config()->set('database.connections.mysql.strict', false);
         $table = DB::table('measurement as m')
-            ->selectRaw('ROUND(AVG(m.dewp), 1) as dewp, m.station, c.country, m.date , ROUND(AVG(m.temp), 1) as temp , ROUND(AVG(m.wdsp), 1)as wdsp, ROUND(AVG(m.prcp), 1) as prcp, ROUND(AVG(m.cldc), 1) as cldc, s.longitude, s.latitude, s.elevation')
+            ->selectRaw('ROUND(AVG(m.dewp), 1) as dewp, m.station, c.country, m.date , ROUND(AVG(m.temp), 1) as temp , ROUND(AVG(m.wdsp), 1)as wdsp, ROUND(AVG(m.prcp), 1) as prcp, ROUND(AVG(m.cldc), 1) as cldc, m.frshtt as frshtt, s.longitude, s.latitude, s.elevation')
             ->join('geolocation as g', 'm.station', '=','g.station_name')
             ->join('station as s', 'm.station', '=', 's.name')
             ->join('country as c', 'g.country_code', '=', 'c.country_code')
