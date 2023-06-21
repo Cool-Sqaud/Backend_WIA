@@ -22,7 +22,7 @@ class MindController extends Controller
             ->where("m.date", Carbon::yesterday()->format('Y-m-d'))
             ->groupBy('m.station', 'm.date',  'g.country_code')
             ->orderByRaw('m.date desc, dewp desc')
-            ->limit(10)
+            // ->limit(10) Do this in frontend, because humidity gets calculated in front end
             ->get();
         return $table;
     }
